@@ -1,10 +1,12 @@
 pipeline {
-    agent any  // Use any available agent
+    agent any
 
     tools {
-        maven 'Maven'  // Ensure this matches the name configured in Jenkins
+        maven 'Maven'
     }
+
     stages {
+
         stage('Checkout') {
             steps {
                 git 'https://github.com/varshinismitha/MymavenWebApp.git'
@@ -13,32 +15,25 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh 'mvn clean package'  // Run Maven build
+                sh 'mvn clean package'
             }
         }
 
         stage('Archive') {
             steps {
-                archiveArtifacts: artifacts 'target/*.war', fingerprint:true
+                archiveArtifacts artifacts: 'target/*.war', fingerprint: true
             }
         }
 
- stage('Deploy') {
-            steps {
-                sh 'mvn clean package'  
-            }
-        }    
-              
     }
 
     post {
         success {
-            echo 'Build and deployment successful!'
+            echo 'Build SUCCESS 🎉'
         }
         failure {
-            echo 'Build failed!'
+            echo 'Build FAILED ❌'
         }
     }
 }
-
 
